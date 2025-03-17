@@ -7,6 +7,7 @@ const fs = require('fs');
 require('dotenv').config();
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
@@ -31,6 +32,7 @@ const upload = multer({
 
 // Initialize OpenAI
 let openaiClient;
+let openaiStatusMsg = '✅ OpenAI client initialized successfully';
 try {
   // Force use of the real API key
   openaiClient = new OpenAI({
@@ -82,7 +84,7 @@ app.post('/api/analyze-image', upload.single('image'), async (req, res) => {
     try {
       // Make API call to OpenAI's vision model
       const response = await openaiClient.chat.completions.create({
-        model: "gpt-4o",
+        model: "gpt-4-vision-preview",
         messages: [
           {
             role: "user",
@@ -191,14 +193,18 @@ PERFUMER'S REVIEW: A composition of remarkable tenacity and sillage, constructed
 
 // Start server
 const server = app.listen(PORT, () => {
+  const isVercel = process.env.VERCEL === '1';
+  const baseUrl = isVercel 
+    ? `https://${process.env.VERCEL_URL}` 
+    : `http://localhost:${PORT}`;
+
   console.log(`
 ╔════════════════════════════════════════════════════════╗
 ║                                                        ║
 ║  Memory Fragrance API Server                           ║
-║  Running on port ${PORT}                                 ║
-║  http://localhost:${PORT}                               ║
+║  Running on ${baseUrl}                                  ║
 ║                                                        ║
-║  API Status: http://localhost:${PORT}/api/status         ║
+║  API Status: ${baseUrl}/api/status                       ║
 ║                                                        ║
 ╚════════════════════════════════════════════════════════╝
   `);
