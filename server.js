@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const { OpenAI } = require('openai');
+const {Gemini} = require('gemini')
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
@@ -8,6 +9,7 @@ require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const api_key = os.getenv('GEMINI_API_KEY')
 
 // Middleware
 app.use(cors());
@@ -44,22 +46,21 @@ const upload = multer({
   limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit
 });
 
+
 // Initialize OpenAI
-let openaiClient;
-let openaiStatusMsg = '✅ OpenAI client initialized successfully';
+let GenimiClient;
+let GenimiStatusMsg = '✅ Genimi client initialized successfully';
 try {
   // Force use of the real API key
-  openaiClient = new OpenAI({
-    apiKey: "sk-OQ4jti-EbvbrzD1sPst2cBRgBlt30OySUaWpKKoxCIT3BlbkFJZT_xtgrSl8P0u7i4sWfgrscrFPlGYvuj2Meb__aSAA"
-  });
+  GenimiClient = new genai.Client({api_key: api_key});
   
   // Test the API key by making a simple call
   // This will throw an error if the key is invalid
-  console.log('Testing OpenAI API key...');
+  console.log('Testing Genimi API key...');
   
-  console.log(openaiStatusMsg);
+  console.log(GenimiStatusMsg);
 } catch (error) {
-  console.error('❌ Failed to initialize OpenAI client:', error.message);
+  console.error('❌ Failed to initialize Genimi client:', error.message);
   console.error('Error details:', error);
 }
 
@@ -76,29 +77,29 @@ app.post('/api/analyze-image', upload.single('image'), async (req, res) => {
     const prompt = `
     You are a master perfumer at a prestigious luxury fragrance house, skilled in translating visual memories into bespoke fragrances for elite clientele.
     
-    Analyze this image and create a complete fragrance profile with the following sections:
+    Please do the following step by step:
     
-    1. NAME: A sophisticated, luxury fragrance name (no special characters or formatting)
+    Step1: Analyze this image to generate 'PHOTO INSPIRATION'
     
-    2. PHOTO INSPIRATION: A concise analysis (25-30 words) of the key visual elements. Identify dominant colors, lighting quality, and mood. Create authentic connections between visual elements and corresponding olfactory components.
+    ('PHOTO INSPIRATION': A concise analysis (25-30 words) of the key visual elements. Also, Identify dominant colors, lighting quality, and mood. 
     
-    3. COMPOSITION:
-       - Top Notes: List only 3-4 premium ingredient names, separated by commas
-       - Heart Notes: List only 3-4 premium ingredient names, separated by commas
-       - Base Notes: List only 2-3 premium ingredient names, separated by commas
-       - Main Accord: A single refined fragrance family descriptor
+    Step2: Output a 'PERFUME NAME' by finding the perfume that conveys the same feeling as the 'PHOTO INSPIRATION' generated in Step1.
     
-    4. PERFUMER'S REVIEW: A poetic, technical description (60-80 words) using refined perfumery vocabulary. Focus on scent progression, sillage, and longevity.
+    (Please find the perfume that's currently selling on the market, do not make up any perfume)
+  
+    Step3: Generate a 'PERFUMER'S REVIEW' for this perfume: A poetic, technical description (60-80 words) using refined perfumery vocabulary. Focus on scent progression, sillage, and longevity.
     
+    Please only output the 'PHOTO INSPIRATION','PERFUME NAME','PERFUMER'S REVIEW'.
+
     Format your response exactly as structured above.
     `;
     
-    console.log('Sending request to OpenAI API...');
+    console.log('Sending request to Genimi API...');
     
     try {
-      // Make API call to OpenAI's vision model
-      const response = await openaiClient.chat.completions.create({
-        model: "gpt-4-vision-preview",
+      // Make API call to Genimi's vision model
+      const response = await GenimiClient.chat.completions.create({
+        model: "gemini-2.5-flash",
         messages: [
           {
             role: "user",
@@ -118,7 +119,7 @@ app.post('/api/analyze-image', upload.single('image'), async (req, res) => {
       
       // Parse the response
       const aiResponse = response.choices[0].message.content;
-      console.log('Received response from OpenAI:', aiResponse.substring(0, 100) + '...');
+      console.log('Received response from Genimi:', aiResponse.substring(0, 100) + '...');
       
       // Parse the AI response to extract the name and full description
       let fragName = "";
@@ -146,7 +147,7 @@ app.post('/api/analyze-image', upload.single('image'), async (req, res) => {
         source: "ai-generated"
       });
     } catch (apiError) {
-      console.error('OpenAI API Error:', apiError);
+      console.error('Gemini API Error:', apiError);
       console.error('Error stack:', apiError.stack);
       
       if (apiError.response) {
@@ -161,17 +162,13 @@ app.post('/api/analyze-image', upload.single('image'), async (req, res) => {
       console.log('Using fallback response due to API error');
       return res.json({ 
         name: "Essence of Memories",
-        description: `NAME: Essence of Memories
-
+        description: `
 PHOTO INSPIRATION: Rich visual harmonies with balanced light and shadow. Warm tones evoke sophistication and emotional resonance, translating to refined olfactory elements.
 
-COMPOSITION:
-- Top Notes: Sicilian Bergamot, Pink Peppercorn, Mediterranean Lavender
-- Heart Notes: Tahitian Vanilla Orchid, Damascena Rose, Amber Resin
-- Base Notes: Mysore Sandalwood, Madagascar Vanilla
-- Main Accord: Oriental Floral
+PERFUME NAME: Sauvage
 
 PERFUMER'S REVIEW: A composition of remarkable tenacity and sillage, constructed around a classic oriental structure. The duality between citrus brightness and floral opulence creates an olfactory chiaroscuro effect reminiscent of Jean-Claude Ellena's transparent approach. The drydown reveals a distinctive ambery character with exceptional longevity, leaving an intimate signature that endures with sophisticated restraint.`,
+
         source: "fallback-mode"
       });
     }
@@ -179,7 +176,7 @@ PERFUMER'S REVIEW: A composition of remarkable tenacity and sillage, constructed
     console.error('Error analyzing image:', error);
     // Log more detailed error information
     if (error.response) {
-      console.error('OpenAI API Error:', {
+      console.error('Gemini API Error:', {
         status: error.response.status,
         data: error.response.data
       });
@@ -189,15 +186,10 @@ PERFUMER'S REVIEW: A composition of remarkable tenacity and sillage, constructed
       error: 'Failed to analyze image: ' + (error.message || 'Unknown error'),
       fallback: {
         name: "Essence of Memories",
-        description: `NAME: Essence of Memories
-
+        description: `
 PHOTO INSPIRATION: Rich visual harmonies with balanced light and shadow. Warm tones evoke sophistication and emotional resonance, translating to refined olfactory elements.
 
-COMPOSITION:
-- Top Notes: Sicilian Bergamot, Pink Peppercorn, Mediterranean Lavender
-- Heart Notes: Tahitian Vanilla Orchid, Damascena Rose, Amber Resin
-- Base Notes: Mysore Sandalwood, Madagascar Vanilla
-- Main Accord: Oriental Floral
+PERFUME NAME: SAUVAGE
 
 PERFUMER'S REVIEW: A composition of remarkable tenacity and sillage, constructed around a classic oriental structure. The duality between citrus brightness and floral opulence creates an olfactory chiaroscuro effect reminiscent of Jean-Claude Ellena's transparent approach. The drydown reveals a distinctive ambery character with exceptional longevity, leaving an intimate signature that endures with sophisticated restraint.`
       }

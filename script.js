@@ -646,6 +646,7 @@ function updateFragranceDetails(fragrance) {
         // Extract information from the response
         let fragranceName = fragrance.name;
         let photoInspiration = "";
+        let perfumeName = "";
         let topNotes = "";
         let heartNotes = "";
         let baseNotes = "";
@@ -656,28 +657,15 @@ function updateFragranceDetails(fragrance) {
         const description = fragrance.description;
         
         // Find Photo Inspiration section - improved regex to ensure we stop at COMPOSITION section
-        const photoInspirationMatch = description.match(/PHOTO INSPIRATION:\s*(.*?)(?=\s*COMPOSITION:|$)/si);
+        const photoInspirationMatch = description.match(/PHOTO INSPIRATION:\s*(.*?)(?=\s*PERFUME NAME:|$)/si);
         if (photoInspirationMatch) {
             photoInspiration = photoInspirationMatch[1].trim();
         }
         
         // Find Composition section and its components
-        const compositionMatch = description.match(/COMPOSITION:\s*([^]*)(?=\s*PERFUMER'S REVIEW:|$)/i);
-        if (compositionMatch) {
-            const composition = compositionMatch[1];
-            
-            // Improved regex patterns with better boundaries
-            const topNotesMatch = composition.match(/- Top Notes:\s*([^]*?)(?=\s*- Heart Notes:|$)/i);
-            if (topNotesMatch) topNotes = topNotesMatch[1].trim();
-            
-            const heartNotesMatch = composition.match(/- Heart Notes:\s*([^]*?)(?=\s*- Base Notes:|$)/i);
-            if (heartNotesMatch) heartNotes = heartNotesMatch[1].trim();
-            
-            const baseNotesMatch = composition.match(/- Base Notes:\s*([^]*?)(?=\s*- Main Accord:|$)/i);
-            if (baseNotesMatch) baseNotes = baseNotesMatch[1].trim();
-            
-            const mainAccordMatch = composition.match(/- Main Accord:\s*([^]*?)(?=$)/i);
-            if (mainAccordMatch) mainAccord = mainAccordMatch[1].trim();
+        const PerfumeNameMatch = description.match(/PERFUME NAME:\s*([^]*)(?=\s*PERFUMER'S REVIEW:|$)/i);
+        if (PerfumeNameMatch) {
+            perfumeName = PerfumeNameMatch[1].trim();
         }
         
         // Find Perfumer's Review section
@@ -687,7 +675,7 @@ function updateFragranceDetails(fragrance) {
         }
         
         // If no structured format is found, use the whole description
-        if (!photoInspiration && !topNotes && !heartNotes && !baseNotes && !perfumerReview) {
+        if (!photoInspiration && !perfumeName && !perfumerReview) {
             perfumerReview = description;
         }
         
@@ -709,35 +697,12 @@ function updateFragranceDetails(fragrance) {
             </div>
             ` : ''}
             
-            <div class="fragrance-notes">
-                ${topNotes ? `
-                <div class="note-category">
-                    <span class="note-label"><strong>Top Notes</strong>: ${topNotes}</span>
-                    <span class="note-separator"></span>
+            ${perfumeName ? `
+                <div class="perfume-name">
+                    <h4>Perfume Name</h4>
+                    <p>${perfumeName}</p>
                 </div>
                 ` : ''}
-                
-                ${heartNotes ? `
-                <div class="note-category">
-                    <span class="note-label"><strong>Heart Notes</strong>: ${heartNotes}</span>
-                    <span class="note-separator"></span>
-                </div>
-                ` : ''}
-                
-                ${baseNotes ? `
-                <div class="note-category">
-                    <span class="note-label"><strong>Base Notes</strong>: ${baseNotes}</span>
-                    <span class="note-separator"></span>
-                </div>
-                ` : ''}
-                
-                ${mainAccord ? `
-                <div class="note-category main-accord">
-                    <span class="note-label"><strong>Main Accord</strong>: ${mainAccord}</span>
-                    <span class="note-separator"></span>
-                </div>
-                ` : ''}
-            </div>
             
             ${perfumerReview ? `
             <div class="perfume-review">
