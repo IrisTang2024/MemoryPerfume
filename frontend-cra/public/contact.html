@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | Memory Perfume</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="script.js"></script>
+</head>
+<body>
+    <nav class="top-nav">
+        <div class="container nav-container">
+            <div class="nav-logo">
+                <a href="index.html"><span class="logo-icon"><i class="fas fa-spray-can"></i></span>Memory Perfume</a>
+            </div>
+            <div class="nav-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html">Home</a></li>
+                <li class="nav-item"><a href="about.html">About</a></li>
+                <li class="nav-item"><a href="contact.html" class="nav-btn active">Contact Us</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header>
+        <div class="container">
+            <h1>Contact Us</h1>
+            <p>Begin your journey towards a truly bespoke Perfume experience</p>
+        </div>
+    </header>
+    
+    <div class="container main-content">
+        <section class="card contact-section">
+            <h2>Create Your Bespoke Perfume</h2>
+            <p class="contact-intro">
+                Our master perfumers are ready to craft a Perfume that captures your most cherished memories.
+                Fill out the form below to begin your personalized luxury Perfume journey.
+            </p>
+            
+            <div class="contact-container">
+                <div class="contact-form">
+                    <form id="contact-form">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="Perfume-type">Preferred Perfume Family</label>
+                            <select id="Perfume-type" name="Perfume-type">
+                                <option value="">Select a Perfume family</option>
+                                <option value="floral">Floral</option>
+                                <option value="oriental">Oriental</option>
+                                <option value="woody">Woody</option>
+                                <option value="fresh">Fresh</option>
+                                <option value="unsure">I'm not sure</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Tell us about your memory or inspiration</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn">
+                            <i class="fas fa-paper-plane"></i> Submit Request
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="contact-info">
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h3>Our Atelier</h3>
+                        <p>123 Essence Boulevard<br>Perfume District<br>New York, NY 10001</p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>Consultation Hours</h3>
+                        <p>Monday - Friday: 10am - 6pm<br>Saturday: 11am - 4pm<br>Sunday: By appointment only</p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h3>Contact Details</h3>
+                        <p>Email: info@memoryPerfume.com<br>Phone: (212) 555-0123</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="card process-section">
+            <h2>The Bespoke Process</h2>
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <h3>Consultation</h3>
+                    <p>Initial discussion about your memories, preferences, and Perfume goals</p>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <h3>Profile Creation</h3>
+                    <p>Our perfumers analyze your memory and create an olfactory profile</p>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <h3>Sample Creation</h3>
+                    <p>Development of custom Perfume samples tailored to your profile</p>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <h3>Refinement</h3>
+                    <p>Fine-tuning the Perfume based on your feedback</p>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">5</div>
+                    <h3>Final Creation</h3>
+                    <p>Production of your unique Perfume in a luxury presentation box</p>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Memory Perfume • Luxury Scent Collection • All rights reserved</p>
+        </div>
+    </footer>
+
+    <style>
+        /* Contact page specific styles */
+        .contact-section {
+            padding: 40px;
+        }
+        
+        .contact-intro {
+            max-width: 800px;
+            margin: 0 auto 40px;
+            text-align: center;
+            color: #555;
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+        }
+        
+        .contact-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .contact-form {
+            flex: 1 1 500px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-family: 'Montserrat', sans-serif;
+            color: #2c2144;
+            font-weight: 500;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid rgba(44, 33, 68, 0.15);
+            border-radius: 6px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.2);
+        }
+        
+        .contact-info {
+            flex: 1 1 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .info-card {
+            background: linear-gradient(to right, #f9f7ff, #ffffff);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            border-color: rgba(212, 175, 55, 0.3);
+        }
+        
+        .info-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #f8f5ff, #eee9ff);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            color: #d4af37;
+            font-size: 24px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        
+        .info-card h3 {
+            font-family: 'Playfair Display', serif;
+            color: #2c2144;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .info-card p {
+            font-family: 'Montserrat', sans-serif;
+            color: #555;
+            line-height: 1.6;
+            font-size: 0.9rem;
+        }
+        
+        .process-section {
+            margin-top: 40px;
+            padding: 40px;
+        }
+        
+        .process-steps {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .process-step {
+            flex: 1 1 200px;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .process-step::after {
+            content: '';
+            position: absolute;
+            top: 50px;
+            right: -7px;
+            width: 15px;
+            height: 2px;
+            background: linear-gradient(to right, rgba(212, 175, 55, 0.4), transparent);
+            display: block;
+        }
+        
+        .process-step:last-child::after {
+            display: none;
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #2c2144, #3d2d5e);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .process-step h3 {
+            font-family: 'Playfair Display', serif;
+            color: #2c2144;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .process-step p {
+            font-family: 'Montserrat', sans-serif;
+            color: #555;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        @media (max-width: 768px) {
+            .contact-container {
+                flex-direction: column;
+            }
+            
+            .process-step::after {
+                display: none;
+            }
+            
+            .info-card {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+
+    <script>
+        // Simple form validation
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            
+            // Basic validation
+            if (name.trim() === '' || email.trim() === '' || message.trim() === '') {
+                showNotification('Please fill out all required fields', 'error');
+                return;
+            }
+            
+            // Simulate form submission
+            showNotification('Thank you for your request. Our perfumers will contact you shortly.', 'success');
+            
+            // Reset form
+            this.reset();
+        });
+    </script>
+</body>
+</html> 
