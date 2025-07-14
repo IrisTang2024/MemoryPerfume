@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-const { OpenAI } = require('openai');
 const {Gemini} = require('gemini')
 const multer = require('multer');
 const path = require('path');
@@ -214,3 +213,5 @@ const server = app.listen(PORT, () => {
 ╚════════════════════════════════════════════════════════╝
   `);
 }); 
+
+module.exports = app;

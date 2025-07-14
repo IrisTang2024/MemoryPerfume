@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@google/genai": "^1.9.0",
+    "@vercel/node": "^5.3.5",
     "cors": "^2.8.5",
     "dotenv": "^16.6.1",
     "express": "^4.21.2",
