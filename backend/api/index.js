@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const {Gemini} = require('gemini')
+const { GoogleGenAI } = require('@google/genai');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
