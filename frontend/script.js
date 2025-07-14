@@ -324,10 +324,10 @@ async function uploadImage() {
                 const imageData = await readFileAsDataURL(file);
                 
                 // Connect to OpenAI API
-                const fragranceDescription = await analyzeImageWithAI(imageData, file.name);
+                const PerfumeDescription = await analyzeImageWithAI(imageData, file.name);
                 
-                // Update the fragrance description
-                updateFragranceDetails(fragranceDescription);
+                // Update the Perfume description
+                updatePerfumeDetails(PerfumeDescription);
                 
                 // Hide loading with elegant fade out
                 loading.style.opacity = '0';
@@ -363,10 +363,10 @@ async function uploadImage() {
                         }, 3000);
                         
                         // Show success notification if not using fallback
-                        if (!fragranceDescription.isError && !fragranceDescription.directMode) {
-                            showNotification("Your bespoke fragrance has been created successfully.", "success");
-                        } else if (fragranceDescription.directMode) {
-                            showNotification("Your fragrance has been created using local AI simulation.", "info");
+                        if (!PerfumeDescription.isError && !PerfumeDescription.directMode) {
+                            showNotification("Your bespoke Perfume has been created successfully.", "success");
+                        } else if (PerfumeDescription.directMode) {
+                            showNotification("Your Perfume has been created using local AI simulation.", "info");
                         }
                         
                         // Restore AI status indicator
@@ -380,7 +380,7 @@ async function uploadImage() {
                 
             } catch (error) {
                 console.error("Error processing image:", error);
-                showNotification("We encountered an issue creating your fragrance. Please try again.", "error");
+                showNotification("We encountered an issue creating your Perfume. Please try again.", "error");
                 
                 loading.style.opacity = '0';
                 setTimeout(() => {
@@ -398,7 +398,7 @@ async function uploadImage() {
         }
     } else {
         // Elegant notification
-        showNotification("Please select an image to create your bespoke fragrance", "info");
+        showNotification("Please select an image to create your bespoke Perfume", "info");
     }
 }
 
@@ -436,7 +436,7 @@ async function analyzeImageWithAI(imageData, imageName) {
         console.error("Error with image analysis:", error);
         
         // Show error notification
-        showNotification("Unable to analyze your photo. Using sample fragrance.", "error");
+        showNotification("Unable to analyze your photo. Using sample Perfume.", "error");
         
         // Fallback to predefined descriptions if all methods fail
         return {
@@ -486,7 +486,7 @@ async function processImageWithServer(imageData, imageName) {
         
         // Return fallback if provided by the backend
         if (responseData.fallback) {
-            console.log("Using fallback fragrance data");
+            console.log("Using fallback Perfume data");
             return {
                 ...responseData.fallback,
                 isError: true
@@ -497,7 +497,7 @@ async function processImageWithServer(imageData, imageName) {
     }
     
     // Successful server processing
-    console.log('Image successfully analyzed, fragrance generated:', responseData.name);
+    console.log('Image successfully analyzed, Perfume generated:', responseData.name);
     return responseData;
 }
 
@@ -530,7 +530,7 @@ async function processImageDirectly(imageData, imageName) {
         name = "Midnight Velvet";
         description = `NAME: Midnight Velvet
 
-PHOTO INSPIRATION: The deep shadows and mysterious tones of this image evoke an atmosphere of contemplative intimacy. The darkness suggests layers of complexity waiting to be discovered, translating into a fragrance that rewards patience and close exploration.
+PHOTO INSPIRATION: The deep shadows and mysterious tones of this image evoke an atmosphere of contemplative intimacy. The darkness suggests layers of complexity waiting to be discovered, translating into a Perfume that rewards patience and close exploration.
 
 COMPOSITION:
 - Top Notes: Black Pepper, Cardamom, Sicilian Bergamot
@@ -538,7 +538,7 @@ COMPOSITION:
 - Base Notes: Aged Oud, Smoky Amber
 - Main Accord: Oriental Woody
 
-PERFUMER'S REVIEW: Like secrets whispered in the dark, this fragrance unfurls with a peppery intensity that gradually softens into mysterious floral dimensions. The heart beats with the exotic rhythm of black orchid and smoldering leather, creating an opulent narrative of depth and character. In its final moments, the composition settles into a velvet embrace of aged oud and amber, leaving a lingering impression of midnight revelations and unspoken desires.`;
+PERFUMER'S REVIEW: Like secrets whispered in the dark, this Perfume unfurls with a peppery intensity that gradually softens into mysterious floral dimensions. The heart beats with the exotic rhythm of black orchid and smoldering leather, creating an opulent narrative of depth and character. In its final moments, the composition settles into a velvet embrace of aged oud and amber, leaving a lingering impression of midnight revelations and unspoken desires.`;
     } else if (colorInfo.isWarm) {
         name = "Golden Memoir";
         description = `NAME: Golden Memoir
@@ -556,7 +556,7 @@ PERFUMER'S REVIEW: Like sunlight captured in a bottle, this composition begins w
         name = "Azure Reflection";
         description = `NAME: Azure Reflection
 
-PHOTO INSPIRATION: The cool tones and ethereal quality of this image evoke the tranquility of water reflecting clear skies. The composition suggests both depth and transparency, creating a visual serenity that translates into a fragrance that feels both grounding and uplifting.
+PHOTO INSPIRATION: The cool tones and ethereal quality of this image evoke the tranquility of water reflecting clear skies. The composition suggests both depth and transparency, creating a visual serenity that translates into a Perfume that feels both grounding and uplifting.
 
 COMPOSITION:
 - Top Notes: Bergamot, Sea Salt, Acquatic Notes, Coriander
@@ -637,14 +637,14 @@ function dataURLtoBlob(dataURL) {
     });
 }
 
-// Function to update the fragrance card with AI-generated content
-function updateFragranceDetails(fragrance) {
+// Function to update the Perfume card with AI-generated content
+function updatePerfumeDetails(Perfume) {
     const nameElement = document.querySelector('.perfume-name');
     const descElement = document.querySelector('.perfume-desc');
     
     if (nameElement && descElement) {
         // Extract information from the response
-        let fragranceName = fragrance.name;
+        let PerfumeName = Perfume.name;
         let photoInspiration = "";
         let perfumeName = "";
         let topNotes = "";
@@ -654,7 +654,7 @@ function updateFragranceDetails(fragrance) {
         let perfumerReview = "";
         
         // Parse the structured description 
-        const description = fragrance.description;
+        const description = Perfume.description;
         
         // Find Photo Inspiration section - improved regex to ensure we stop at COMPOSITION section
         const photoInspirationMatch = description.match(/PHOTO INSPIRATION:\s*(.*?)(?=\s*PERFUME NAME:|$)/si);
@@ -680,7 +680,7 @@ function updateFragranceDetails(fragrance) {
         }
         
         // Update the UI with the extracted information
-        nameElement.textContent = fragranceName;
+        nameElement.textContent = PerfumeName;
         
         // Clear previous content
         const perfumeCard = document.querySelector('.perfume-card');
@@ -688,7 +688,7 @@ function updateFragranceDetails(fragrance) {
         
         // Recreate the content to ensure proper structure
         perfumeDetails.innerHTML = `
-            <div class="perfume-name">${fragranceName}</div>
+            <div class="perfume-name">${PerfumeName}</div>
             
             ${photoInspiration ? `
             <div class="photo-inspiration">
@@ -713,19 +713,19 @@ function updateFragranceDetails(fragrance) {
             
             <div class="perfume-signature">
                 <span class="signature-line"></span>
-                <span class="signature-text">Memory Fragrance</span>
+                <span class="signature-text">Memory Perfume</span>
                 <span class="signature-line"></span>
             </div>
         `;
         
         // Add visual indicator if using fallback due to error
-        if (fragrance.isError) {
+        if (Perfume.isError) {
             nameElement.classList.add('fallback-data');
             
             // Add a small note about the fallback
             const fallbackNote = document.createElement('div');
             fallbackNote.className = 'fallback-note';
-            fallbackNote.innerHTML = '<i class="fas fa-info-circle"></i> Using sample fragrance (AI connection unavailable)';
+            fallbackNote.innerHTML = '<i class="fas fa-info-circle"></i> Using sample Perfume (AI connection unavailable)';
             fallbackNote.style.textAlign = 'left';
             
             if (!perfumeCard.querySelector('.fallback-note')) {
@@ -973,7 +973,7 @@ styleElement.textContent = `
         margin: 10px 0 0 0;
     }
     
-    .fragrance-notes {
+    .Perfume-notes {
         margin: 20px 0;
         position: relative;
         z-index: 1;
@@ -1258,10 +1258,10 @@ function initTestimonialsAnimations() {
         });
     }
     
-    // Add hover effects to fragrance bottles
+    // Add hover effects to Perfume bottles
     document.querySelectorAll('.memory-card').forEach(card => {
         card.addEventListener('mouseenter', function() {
-            const bottle = this.querySelector('.fragrance-bottle');
+            const bottle = this.querySelector('.Perfume-bottle');
             if (bottle) {
                 bottle.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1.4)';
                 bottle.style.transform = 'translateY(-15px)';
@@ -1270,7 +1270,7 @@ function initTestimonialsAnimations() {
         });
         
         card.addEventListener('mouseleave', function() {
-            const bottle = this.querySelector('.fragrance-bottle');
+            const bottle = this.querySelector('.Perfume-bottle');
             if (bottle) {
                 bottle.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)';
                 bottle.style.transform = 'translateY(0)';
@@ -1317,8 +1317,8 @@ function animateTestimonialCard(card) {
                 }, 1200);
             }
             
-            // Animate the fragrance bottle with a slight delay
-            const bottle = card.querySelector('.fragrance-bottle');
+            // Animate the Perfume bottle with a slight delay
+            const bottle = card.querySelector('.Perfume-bottle');
             if (bottle) {
                 bottle.style.opacity = '0';
                 bottle.style.transform = 'translateY(20px)';

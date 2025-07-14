@@ -9,7 +9,7 @@ require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const api_key = os.getenv('GEMINI_API_KEY')
+const key = process.env.GEMINI_API_KEY
 
 // Middleware
 app.use(cors());
@@ -34,7 +34,7 @@ app.get('/contact', (req, res) => {
 app.get('/api/status', (req, res) => {
   res.json({ 
     status: 'running', 
-    message: 'Memory Fragrance API is operational',
+    message: 'Memory Perfume API is operational',
     timestamp: new Date().toISOString()
   });
 });
@@ -51,8 +51,7 @@ const upload = multer({
 let GenimiClient;
 let GenimiStatusMsg = '✅ Genimi client initialized successfully';
 try {
-  // Force use of the real API key
-  GenimiClient = new GoogleGenAI({api_key: api_key});
+  GenimiClient = new GoogleGenAI({api_key: key});
   
   // Test the API key by making a simple call
   // This will throw an error if the key is invalid
@@ -64,7 +63,7 @@ try {
   console.error('Error details:', error);
 }
 
-// API endpoint to analyze image and generate fragrance description
+// API endpoint to analyze image and generate Perfume description
 app.post('/api/analyze-image', upload.single('image'), async (req, res) => {
   try {
     if (!req.file) {
@@ -75,7 +74,7 @@ app.post('/api/analyze-image', upload.single('image'), async (req, res) => {
     const imageUrl = `data:${req.file.mimetype};base64,${base64Image}`;
     
     const prompt = `
-    You are a master perfumer at a prestigious luxury fragrance house, skilled in translating visual memories into bespoke fragrances for elite clientele.
+    You are a master perfumer at a prestigious luxury Perfume house, skilled in translating visual memories into bespoke Perfumes for elite clientele.
     
     Please do the following step by step:
     
@@ -138,9 +137,9 @@ app.post('/api/analyze-image', upload.single('image'), async (req, res) => {
       // Use the entire response as the description (will be parsed in frontend)
       fragDescription = aiResponse;
       
-      console.log(`Generated fragrance: "${fragName}"`);
+      console.log(`Generated Perfume: "${fragName}"`);
       
-      // Return the fragrance details
+      // Return the Perfume details
       return res.json({
         name: fragName,
         description: fragDescription,
@@ -207,7 +206,7 @@ const server = app.listen(PORT, () => {
   console.log(`
 ╔════════════════════════════════════════════════════════╗
 ║                                                        ║
-║  Memory Fragrance API Server                           ║
+║  Memory Perfume API Server                           ║
 ║  Running on ${baseUrl}                                  ║
 ║                                                        ║
 ║  API Status: ${baseUrl}/api/status                       ║

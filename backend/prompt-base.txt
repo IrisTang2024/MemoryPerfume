@@ -1,13 +1,13 @@
 /*prompt for generate customized perfume*
-create a complete fragrance profile with the following sections:
+create a complete Perfume profile with the following sections:
 
-NAME: A sophisticated, luxury fragrance name (no special characters or formatting)
+NAME: A sophisticated, luxury Perfume name (no special characters or formatting)
 
 COMPOSITION:
        - Top Notes: List only 3-4 premium ingredient names, separated by commas
        - Heart Notes: List only 3-4 premium ingredient names, separated by commas
        - Base Notes: List only 2-3 premium ingredient names, separated by commas
-       - Main Accord: A single refined fragrance family descriptor
+       - Main Accord: A single refined Perfume family descriptor
     
 /*Regularization for customized perfumes*
 / Find Composition section and its components
@@ -31,7 +31,7 @@ COMPOSITION:
         }
 
 /*JavaScript Part*
-<div class="fragrance-notes">
+<div class="Perfume-notes">
                 ${topNotes ? `
                 <div class="note-category">
                     <span class="note-label"><strong>Top Notes</strong>: ${topNotes}</span>
