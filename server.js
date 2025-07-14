@@ -52,7 +52,7 @@ let GenimiClient;
 let GenimiStatusMsg = '✅ Genimi client initialized successfully';
 try {
   // Force use of the real API key
-  GenimiClient = new genai.Client({api_key: api_key});
+  GenimiClient = new GoogleGenAI({api_key: api_key});
   
   // Test the API key by making a simple call
   // This will throw an error if the key is invalid
