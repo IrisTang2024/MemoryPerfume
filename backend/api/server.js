@@ -195,23 +195,5 @@ PERFUMER'S REVIEW: A composition of remarkable tenacity and sillage, constructed
   }
 });
 
-// Start server
-const server = app.listen(PORT, () => {
-  const isVercel = process.env.VERCEL === '1';
-  const baseUrl = isVercel 
-    ? `https://${process.env.VERCEL_URL}` 
-    : `http://localhost:${PORT}`;
-
-  console.log(`
-╔════════════════════════════════════════════════════════╗
-║                                                        ║
-║  Memory Perfume API Server                           ║
-║  Running on ${baseUrl}                                  ║
-║                                                        ║
-║  API Status: ${baseUrl}/api/status                       ║
-║                                                        ║
-╚════════════════════════════════════════════════════════╝
-  `);
-}); 
 
 module.exports = app;
