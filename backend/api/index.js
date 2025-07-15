@@ -251,29 +251,3 @@ module.exports = async (req, res) => {
 
   res.status(200).json({ message: 'Message sent successfully' });
 };
-
-// 新增 /api/user-info 路由，接收 Contact.js 表单字段并存储到 MongoDB
-app.post('/api/user-info', async (req, res) => {
-  const { name, email, phone, 'Perfume-type': perfumeType, message } = req.body;
-  if (!name || !email || !message) {
-    return res.status(400).json({ error: 'Missing required fields' });
-  }
-
-  try {
-    await dbConnect();
-    const entry = new Contact({
-      name,
-      email,
-      phone,
-      perfumeType,
-      message
-    });
-    await entry.save();
-    res.status(200).json({ message: 'User info saved successfully' });
-  } catch (error) {
-    console.error('Error saving user info:', error);
-    res.status(500).json({ error: 'Failed to save user info' });
-  }
-});
-
-module.exports = app;
