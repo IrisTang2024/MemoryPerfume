@@ -4,11 +4,13 @@ const { GoogleGenAI } = require('@google/genai');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const mongoose = require('mongoose');
 require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const key = process.env.GEMINI_API_KEY
+const MONGODB_URI = process.env.MONGODB_URI; // 在 Vercel 环境变量中配置
 
 // Middleware
 app.use(cors());
@@ -195,5 +197,83 @@ PERFUMER'S REVIEW: A composition of remarkable tenacity and sillage, constructed
   }
 });
 
+let cached = global.mongoose;
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
+
+async function dbConnect() {
+  if (cached.conn) return cached.conn;
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }).then((mongoose) => mongoose);
+  }
+  cached.conn = await cached.promise;
+  return cached.conn;
+}
+
+// 定义 Schema
+const ContactSchema = new mongoose.Schema({
+  name: String,
+  email: String,
+  phone: String,
+  perfumeType: String,
+  message: String,
+  date: { type: Date, default: Date.now }
+});
+
+// 防止模型重复注册
+const Contact = mongoose.models.Contact || mongoose.model('Contact', ContactSchema);
+
+module.exports = async (req, res) => {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  const { name, email, phone, 'Perfume-type': perfumeType, message } = req.body;
+  if (!name || !email || !message) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+
+  await dbConnect();
+
+  const entry = new Contact({
+    name,
+    email,
+    phone,
+    perfumeType,
+    message
+  });
+
+  await entry.save();
+
+  res.status(200).json({ message: 'Message sent successfully' });
+};
+
+// 新增 /api/user-info 路由，接收 Contact.js 表单字段并存储到 MongoDB
+app.post('/api/user-info', async (req, res) => {
+  const { name, email, phone, 'Perfume-type': perfumeType, message } = req.body;
+  if (!name || !email || !message) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+
+  try {
+    await dbConnect();
+    const entry = new Contact({
+      name,
+      email,
+      phone,
+      perfumeType,
+      message
+    });
+    await entry.save();
+    res.status(200).json({ message: 'User info saved successfully' });
+  } catch (error) {
+    console.error('Error saving user info:', error);
+    res.status(500).json({ error: 'Failed to save user info' });
+  }
+});
 
 module.exports = app;
